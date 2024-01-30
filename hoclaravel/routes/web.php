@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/unicode', function () {
+    return view('home');
+});
+Route::get('/san-pham', function () {
+    return view('product');
+});
