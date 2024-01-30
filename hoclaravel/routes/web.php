@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/unicode', function () {
+    // $user = new User();
+    // $allUser = $user::all();
+    // dd($allUser);
     return view('home');
 });
 Route::get('/san-pham', function () {
