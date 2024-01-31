@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 // use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -65,20 +66,82 @@ use Illuminate\Http\Request;
 // Route::redirect('unicode', 'show-form', 301);
 
 // Route::view('show-form', 'form');
-Route::prefix('admin')->group(function(){
+// Route::prefix('admin')->group(function(){
+//     Route::get('unicode', function(){
+//         return 'Phương thức Get của path/unicode';
+//     });
+//     Route::get('show-form', function(){
+//         return view('form');
+//     });
+//     Route::prefix('products')->group(function(){
+//         Route::get('/', function(){
+//             return 'Danh sách sản phẩm';
+//         });
+//         Route::get('add', function(){
+//             return 'Thêm sản phẩm';
+//         });
+//         Route::get('edit', function(){
+//             return 'Sửa sản phẩm';
+//         });
+//         Route::get('delete', function(){
+//             return "Xóa sản phẩm";
+//         });
+//     });
+// });
+// Route::view('show-form', 'form');
+// Route::prefix('admin')->group(function(){
+//     // Route::get('tin-tuc/{id}.html', function($id){ // chỉ lấy id không lấy chuỗi
+//     // Route::get('tin-tuc/{slug}-{id}.html', function($slug,$id){
+//     // Route::get('tin-tuc/{slug}-{id}.html', function($id, $slug){
+//     Route::get('tin-tuc/{id?}/{slug?}', function($id=null, $slug = null){
+//         $content = 'Phương thức Get của path/unicode với id: ';
+//         $content.= 'id=' . "$id". "<br>";
+//         $content.= 'slug=' . "$slug";
+//         // $content.= 'slug = ' . "$slug";
+//         return $content;
+//     });
+// });
+
+// Route::view('show-form', 'form');
+Route::prefix('admin')->group(function () {
+    Route::get('tin-tuc/{slug?}/{id?}.html', function ($slug = null, $id = null) {
+        $content = 'Phương thức Get của path/unicode với id: ';
+        $content .= 'id=' . "$id" . "<br>";
+        $content .= 'slug=' . "$slug";
+        return $content;
+    })->where(
+        [
+            'slug' => '[a-z-]+',
+            'slug' => '.+', // cũng có thể dùng .+ 
+            'id' => '[0-9]+'
+        ]
+    // có thể dùng where dưới dạng mảng hoặc
+    // ->where('id', '[0-9]+')->where('slug', '.+');
+    )->name('admin.tintuc');
+});
+
+//Đặt tên cho route
+// Route::get('/', function(){
+//     return view('home');
+// })->name('home');
+Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
+Route::get('/tin-tuc', 'App\Http\Controllers\HomeController@getNews')->name('news');
+Route::get('/chuyenmuc/{id}', [HomeController::class,'getCategories'])->name('chuyenmuc');
+Route::view('show-form', 'form');
+Route::prefix('admin')->middleware('checkpermission')->group(function(){
     Route::get('unicode', function(){
         return 'Phương thức Get của path/unicode';
     });
     Route::get('show-form', function(){
         return view('form');
-    });
+    })->name('admin.show-form');
     Route::prefix('products')->group(function(){
         Route::get('/', function(){
             return 'Danh sách sản phẩm';
         });
         Route::get('add', function(){
             return 'Thêm sản phẩm';
-        });
+        })->name('admin.product.add');
         Route::get('edit', function(){
             return 'Sửa sản phẩm';
         });
