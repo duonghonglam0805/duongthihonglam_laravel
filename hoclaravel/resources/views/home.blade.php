@@ -11,3 +11,6 @@
         echo 'Call Api sandbox';
     }
 ?>
+<a href="<?php echo route('admin.show-form') ?>">Show form</a>
+<a href="<?php echo route('admin.product.add') ?>">Thêm sản phẩm</a>
+<a href="<?php echo route('admin.tintuc', ['id' => 1, 'slug' => 'tin-tuc-the-gioi']); ?>">Xem tin tức</a>
