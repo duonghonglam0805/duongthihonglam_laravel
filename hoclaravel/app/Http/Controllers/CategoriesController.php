@@ -8,6 +8,8 @@ class CategoriesController extends Controller
 {
     public function __construct()
     {
+        //Sử dụng session để kiểm tra login
+        //echo "Categories khởi động";
     }
     //Hiển thị danh sách chuyên mục (Phương thức GET)
     public function index()

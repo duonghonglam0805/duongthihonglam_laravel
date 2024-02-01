@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 // use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\Admin\ProductsController;
-// use Whoops\Run;
+use App\Http\Controllers\Admin\DashboardController;
+use Whoops\Run;
 
 /*
 |--------------------------------------------------------------------------
@@ -155,7 +156,11 @@ use App\Http\Controllers\Admin\ProductsController;
 //     });
 // });
 
-Route::prefix('categories')->group(function(){
+Route::get('/' , function (){
+    return '<h1 style = "text-align: center;">TRANG CHỦ UNICODE</h1>';
+})->name('homepage');
+
+Route::middleware('api.test')->prefix('categories')->group(function(){
     //Danh sách chuyên mục
     Route::get('/',[CategoriesController::class, 'index'])->name('categories.list');
     //Lấy chi tiết 1 chuyên mục (Áp dụng show form chỉnh sửa chuyên mục)
@@ -171,6 +176,12 @@ Route::prefix('categories')->group(function(){
 });
 
 // Route resourse
-Route::prefix("admin")->group(function(){
-    Route::resource('products', ProductsController::class);
+// Route::prefix("admin")->group(function(){
+//     Route::resource('products', ProductsController::class);
+// });
+
+//Học Middleware trong laravel
+Route::middleware('auth.admin')->prefix("admin")->group(function(){
+    Route::get('/', [DashboardController::class,'index']);
+    Route::resource('products', ProductsController::class)->middleware('auth.admin.product');
 });
