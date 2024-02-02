@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 // use App\Models\User;
 use Illuminate\Http\Request;
-// use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -155,10 +155,10 @@ use Whoops\Run;
 //         });
 //     });
 // });
-
-Route::get('/' , function (){
-    return '<h1 style = "text-align: center;">TRANG CHỦ UNICODE</h1>';
-})->name('homepage');
+Route::get('/',[HomeController::class, 'index'])->name('homepage');
+// Route::get('/' , function (){
+//     return '<h1 style = "text-align: center;">TRANG CHỦ UNICODE</h1>';
+// })->name('homepage');
 
 Route::middleware('api.test')->prefix('categories')->group(function(){
     //Danh sách chuyên mục
@@ -175,6 +175,7 @@ Route::middleware('api.test')->prefix('categories')->group(function(){
     Route::delete('/delete/{id}', [CategoriesController::class, 'deleteCategory'])->name('categories.delete');
 });
 
+Route::get('san-pham/{id}',[HomeController::class, 'getProductDetail']);
 // Route resourse
 // Route::prefix("admin")->group(function(){
 //     Route::resource('products', ProductsController::class);
