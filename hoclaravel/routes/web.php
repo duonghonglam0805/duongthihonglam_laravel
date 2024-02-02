@@ -155,12 +155,12 @@ use Whoops\Run;
 //         });
 //     });
 // });
-Route::get('/',[HomeController::class, 'index'])->name('homepage');
+Route::get('/',[HomeController::class, 'index'])->name('homepage')->middleware('auth.admin');
 // Route::get('/' , function (){
 //     return '<h1 style = "text-align: center;">TRANG CHỦ UNICODE</h1>';
 // })->name('homepage');
 
-Route::middleware('api.test')->prefix('categories')->group(function(){
+Route::middleware('auth.admin')->prefix('categories')->group(function(){
     //Danh sách chuyên mục
     Route::get('/',[CategoriesController::class, 'index'])->name('categories.list');
     //Lấy chi tiết 1 chuyên mục (Áp dụng show form chỉnh sửa chuyên mục)
