@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Else_;
 
 class CategoriesController extends Controller
 {
@@ -51,9 +52,13 @@ class CategoriesController extends Controller
 
         //Helper
         // dd($request);
-        $id = $request('id');
-        $name = $request('name', 'unicode'); //unicode này tức là một giá trị mặc định khi mà trên url không có giá trị
-        dd($name);
+        // $id = $request('id');
+        // $name = $request('name', 'unicode'); //unicode này tức là một giá trị mặc định khi mà trên url không có giá trị
+        // dd($name);
+        $id = $request->query('id');
+        dd($id);
+        $query = $request->query();
+        dd($query);
        return view('clients/categories/list');
     }
     // Lấy ra một chuyên mục theo id (phương thức get)
@@ -67,22 +72,70 @@ class CategoriesController extends Controller
     }
     //Show form dữ liệu (phương thức GET)
     public function addCategory(Request $request){
-        $path = $request->path();
-        echo $path;
+        // $path = $request->path();
+        // echo $path;
+        // $categoryName= $request->old('category_name');
+        // echo $categoryName;
+        // return view('clients/categories/add', compact('categoryName'));
         return view('clients/categories/add');
+
     }
     // Thêm dữ liệu vào chuyên mục (phương thức POST)
     public function handleAddCategory(Request $request){
         // return "Submit sửa chuyên mục ok";
         // $allData = $request->all();
         // dd($allData);        
-        if($request->isMethod('POST')){
-            echo "Phương thức POTS";
+        // if($request->isMethod('POST')){
+        //     echo "Phương thức POTS";
+        // }
+        
+        // $category = $request->category_name;
+        // $category = $request->id;
+        // dd($category);
+        if ($request->has('category_name')){
+            $category = $request->category_name;
+            // dd($category);
+            $request->flash();
+            return redirect(route('categories.add'));
+        }else{
+            return 'Không có categoty_name';
         }
         // return redirect(route('categories.add'));
     }
     // Xóa dữ liệu (Phương thức DELETE)
     public function deleteCategory($id){
         return "Xóa chuyên mục: " . $id;
+    }
+    // xử lý hiển thị form upload
+    public function getFile(){
+        return view('clients/categories/file');
+    }
+    //Xử lý lấy thông tin file
+    public function handleUploadFile(Request $request){
+        // $file = $request->file('photo');
+        if ($request->hasFile('photo')){ //Kiểm tra xem file đang được chọn hay chưa
+            if ($request->photo->isValid()){
+                $file = $request->photo;
+                // dd($file);
+                // $path = $file->path();
+                // dd($path);
+                $ext = $file->extension();
+                // dd($ext);
+                // $path = $request->photo->store('images');
+                // $path = $request->photo->store('file', 'local');
+                // $path = $request->photo->storeAs('file', 'filename.txt');
+                // dd($path);
+                // $fileName = $file->getClientOriginalName();
+                // dd($fileName);
+                // Đổi tên
+                $fileName = md5(uniqid()) . '.' . $ext;
+                dd($fileName);
+            }else{
+                return "Upload không thành công";
+            }
+
+        }else{
+            return "Vui lòng chọn file";
+        }
     }
 }
