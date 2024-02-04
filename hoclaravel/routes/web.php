@@ -173,6 +173,10 @@ Route::middleware('auth.admin')->prefix('categories')->group(function(){
     Route::post('/add',[CategoriesController::class, 'handleAddCategory']);
     //Xóa dữ liệu
     Route::delete('/delete/{id}', [CategoriesController::class, 'deleteCategory'])->name('categories.delete');
+    //Xử lý hiển thị form upload file
+    Route::get('/upload',[CategoriesController::class, 'getFile']);
+    // Xử lý file
+    Route::post('/upload',[CategoriesController::class, 'handleUploadFile'])->name('categories.upload');
 });
 
 Route::get('san-pham/{id}',[HomeController::class, 'getProductDetail']);
