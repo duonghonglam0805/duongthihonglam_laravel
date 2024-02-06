@@ -1,1 +1,0 @@
-<h1>Danh sách chuyên mục học laravel</h1>

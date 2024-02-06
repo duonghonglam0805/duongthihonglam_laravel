@@ -6,26 +6,20 @@
 @endsection
 
 @section('sidebar')
-    @parent 
-    <h5>Sidebar childrent</h5>
-@endsection
-    @section('content')
-        <h1>Đây là trang home của clients</h1>
-        <button type="button" class="show">Show</button>
-    @endsection
-@section('css')
-    <style>
-        header{
-            background: blue;
-            color : white;
-        }
-    </style>
+    {{-- @parent  --}}
+    <h5>Home Sidebar</h5>
 @endsection
 
+@section('content')
+    <h1>Trang chủ</h1>
+    @include('clients.contents.slide')
+    @include('clients.contents.about')
+@endsection
+
+@section('css')
+@endsection
+
+
 @section('js')
-    <script>
-        document.querySelector('.show').onclick= function(){
-            alert('Thành công');
-        }
-    </script>
+
 @endsection
