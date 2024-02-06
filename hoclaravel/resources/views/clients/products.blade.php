@@ -10,6 +10,15 @@
 @endsection --}}
 @section('content')
     <h1>Đây là trang products</h1>
+    @push('script')
+        <script>
+            console.log('Phần 2');
+        </script>
+    @endpush
 @endsection
-@section('css')
-@endsection
+
+@prepend('script')
+<script>
+    console.log('Phần 1');
+</script>
+@endprepend

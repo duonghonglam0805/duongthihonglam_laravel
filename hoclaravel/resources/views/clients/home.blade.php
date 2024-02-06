@@ -12,8 +12,10 @@
 
 @section('content')
     <h1>Trang chủ</h1>
+    @datetime('2025-03-03 14:03:00')
     @include('clients.contents.slide')
     @include('clients.contents.about')
+    @datetime('2034-03-03 14:03:00')
 @endsection
 
 @section('css')
