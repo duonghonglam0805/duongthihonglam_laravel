@@ -18,3 +18,4 @@ use Whoops\Run;
 */
 
 Route::get('/',[HomeController::class,'index']);
+Route::get('/san-pham',[HomeController::class,'products']);
