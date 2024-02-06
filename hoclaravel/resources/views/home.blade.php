@@ -53,7 +53,7 @@
 @endswitch
 
 <hr>
-@for($i = 0; $i < 10; $i++)
+{{-- @for($i = 0; $i < 10; $i++)
     <p>Phần tử thứ: {{$i}}</p>
     @if($i == 5)
         @break
@@ -65,4 +65,33 @@
         @continue
     @endif
     <p>Phần tử thứ: {{$i}}</p>
-@endfor
+@endfor --}}
+
+{{-- php --}}
+
+@php
+    $number = 17;
+    if($number <=10){
+        $total = $number + 20;
+    }else{
+        $total = $number + 10;
+    }
+@endphp
+<h3>Kết quả là: {{$number}} + {{$total}}</h3>
+
+<hr>
+@verbatim
+    <div class="container">
+        Hello, {{$className}}
+    </div>
+@endverbatim
+
+<script>
+    Hello, @{{$name}}
+</script>
+
+{{-- INCLUDE --}}
+@php
+    // $message = 'Đặt hàng thành công';
+@endphp
+@include('parts.notice')
