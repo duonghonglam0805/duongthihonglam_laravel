@@ -24,6 +24,7 @@
                 <div class="col-8">   
                     <div class="content">
                         @yield('content')
+                        @yield('title')
                     </div>
                 </div>
             </div>
@@ -33,5 +34,6 @@
     <script src="{{asset('assets/clients/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/clients/js/custom.js')}}"></script>
     @yield('js')
+    @stack('script')
 </body>
 </html>
