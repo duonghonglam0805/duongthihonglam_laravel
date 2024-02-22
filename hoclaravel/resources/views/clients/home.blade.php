@@ -1,9 +1,4 @@
 @extends('layouts.client')
-@section('title')
-    <p>Header</p>
-    {{$title}}
-@endsection
-
 @section('sidebar')
     {{-- @parent  --}}
     <h5>Home Sidebar</h5>
@@ -20,4 +15,11 @@
     @else
     <p>Môi trường dev</p>
     @endenv
+    {{-- <x-alert/> --}}
+    {{-- <x-alert type="danger" /> --}}
+    <x-alert type="info" :content="$title" dataIcon="youtube"/>
+    {{-- <x-package-alert/> --}}
+    {{-- <x-inputs.button/>
+    <x-forms.button/> --}}
+
 @endsection

@@ -20,5 +20,5 @@ use Whoops\Run;
 Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/san-pham',[HomeController::class,'products'])->name('product');
 Route::get('/them-san-pham',[HomeController::class,'getProducts'])->name('addproduct');
-// Route::post('/them-san-pham',[HomeController::class,'postProducts']);
+Route::post('/them-san-pham',[HomeController::class,'postProducts']);
 Route::put('/them-san-pham',[HomeController::class,'putProducts']);
