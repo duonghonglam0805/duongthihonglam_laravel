@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
 class HomeController extends Controller
 {
     public $data = [];
@@ -24,5 +25,13 @@ class HomeController extends Controller
     }
     public function putProducts(Request $request){
         dd($request);
+    }
+    public function getArr(){
+        $contentArr = [
+            'name' => 'Laravel',
+            'lesson' => 'Khóa học lập trình laravel',
+            'academy' => 'Unicode academy'
+        ];
+        return $contentArr;
     }
 }
