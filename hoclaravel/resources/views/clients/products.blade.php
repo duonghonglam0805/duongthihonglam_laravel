@@ -15,7 +15,7 @@
             console.log('Phần 2');
         </script>
     @endpush
-    <x-package-alert/>
+    {{-- <x-package-alert/> --}}
 @endsection
 
 @prepend('script')

@@ -21,11 +21,36 @@ class HomeController extends Controller
     public function getProducts()
     {
         $this->data['title'] = 'Thêm sản phẩm';
+        $this->data['errorMessage'] = 'Vui lòng kiểm tra lại dữ kiệu';
         return view('clients.add', $this->data);
     }
     public function postProducts(Request $request)
     {
-        dd($request);
+        $rules =
+            [
+                'product_name' => 'required|min:6',
+                'product_price' => 'required|integer'
+            ];
+        // $message =
+        //     [
+        //         'product_name.required' => 'Trường :attribute bắt buộc phải nhập',
+        //         'product_name.min' => 'Tên sản phẩm không được nhỏ hơn :min kí tự',
+        //         'product_price.required' => 'Giá sản phẩm bắt buộc phải nhập',
+        //         'product_price.integer' => 'Giá sản phẩm phải là số',
+        //     ];
+
+        $message = [
+            'required' => 'Trường :attribute bắt buộc phải nhập',
+            'min' => 'Trường :attribute không được nhỏ hơn :min kí tự',
+            'integer' => 'Trường :attibute phải là số '
+        ];
+        $request->validate($rules, $message);
+        // $request->validate([
+        //     'product_name' => ['required', 'integer', 'min:6'],
+        //     'product_price' => 'required|integer'
+        // ]);
+        // Xử lý việc thêm dữ liệu vào database
+
     }
     public function putProducts(Request $request)
     {
