@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Http\Exceptions\HttpResponseException;
 class ProductRequest extends FormRequest
 {
     /**
@@ -11,7 +11,7 @@ class ProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; //Cho phép là có đồng ý truy suất vào request này hay không
+        return false; //Cho phép là có đồng ý truy suất vào request này hay không
     }
 
     /**
@@ -46,4 +46,33 @@ class ProductRequest extends FormRequest
             'product_price' => 'Giá sản phẩm'
         ];
     }
+    protected function withValidator($validator)
+    {
+        // dd($validator->errors()->count()); //kiểm tra xem có bao nhiêu lỗi trong danh sách lỗi
+        $validator->after(function ($validator) {
+            if ($validator->errors()->count() > 0) {
+                $validator->errors()->add('msg', 'Đã có lỗi xảy ra vui lòng kiểm tra lại');
+            }
+            //    dd('ok');
+        });
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'create_at' => date('Y-m-d H:i:s'),
+        ]);
+    }
+    // protected function failedAuthorization()
+    // {
+    //     throw new AuthorizationException ('Bạn đang truy cập vào khu vực cấp');
+    // }
+
+    //chuyển hướng
+    protected function failedAuthorization()
+    {
+        // throw new HttpResponseException (redirect('/')->with('nsg', 'Bạn không có quyền truy cập')->with('type', 'danger'));
+        throw new HttpResponseException(abort(404));
+    }
+    
 }

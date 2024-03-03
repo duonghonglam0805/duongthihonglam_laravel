@@ -5,6 +5,11 @@
 @endsection
 
 @section('content')
+    @if(session('nsg'))
+        <div class="alert alert-{{session('type')}}">
+            {{session('nsg')}}
+        </div>
+    @endif
     <h1>Trang chủ</h1>
     @include('clients.contents.slide')
     @include('clients.contents.about')
