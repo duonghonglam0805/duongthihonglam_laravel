@@ -55,7 +55,7 @@ class HomeController extends Controller
     // }
     public function putProducts(Request $request)
     {
-        dd($request);
+        dd($request->all());
     }
     public function getArr()
     {
@@ -83,7 +83,7 @@ class HomeController extends Controller
     // Sử dụng request
     public function postProducts(ProductRequest $request)
     {
-        dd($request);
+        dd($request->all());
     }
     public function dowloadPDF(Request $request)
     {

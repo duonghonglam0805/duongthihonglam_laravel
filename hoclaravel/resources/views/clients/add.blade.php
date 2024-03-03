@@ -6,14 +6,17 @@
     <p>Form thêm sản phẩm</p>
     <form action="" method="POST">
         {{-- Biến $errors sẽ tự động sinh ra nếu như validate in ra lỗi --}}
-    @if ($errors->any()) 
+    {{-- @if ($errors->any()) 
         <div class="alert alert-danger text-center">
             {{-- @foreach($errors->all() as $error)
                 <p>{{$error}}</p>
             @endforeach --}}
-            {{$errorMessage}}
-        </div>
-    @endif
+            {{-- {{$errorMessage}} --}}
+        {{-- </div> --}}
+    {{-- @endif --}} 
+    @error('msg')
+        <div class="alert alert-danger text-center">{{$message}}</div>
+    @enderror
         <div class="mb-3">
             <label for="">Tên sản phẩm</label>
             <input type="text" class="form-control" name="product_name" placeholder="Tên sản phẩm....." value="{{old('product_name')}}">
