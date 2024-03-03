@@ -11,7 +11,7 @@ class ProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false; //Cho phép là có đồng ý truy suất vào request này hay không
+        return true; //Cho phép là có đồng ý truy suất vào request này hay không
     }
 
     /**
