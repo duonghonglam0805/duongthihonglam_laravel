@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -81,10 +82,10 @@ class HomeController extends Controller
     }
 
     // Sử dụng request
-    public function postProducts(ProductRequest $request)
-    {
-        dd($request->all());
-    }
+    //     public function postProducts(ProductRequest $request)
+    //     {
+    //         dd($request->all());
+    //     }
     public function dowloadPDF(Request $request)
     {
         if (!empty($request->file)) {
@@ -95,5 +96,38 @@ class HomeController extends Controller
             ];
             return response()->download($file, $fileName, $headers);
         }
+    }
+
+    // sử dụng validator để validate
+    public function postProducts(Request $request)
+    {
+        $rules =
+            [
+                'product_name' => 'required|min:6',
+                'product_price' => 'required|integer'
+            ];
+
+        $messages =
+            [
+                'product_name.required' => 'Trường :attribute bắt buộc phải nhập',
+                'product_name.min' => 'Tên sản phẩm không được nhỏ hơn :min kí tự',
+                'product_price.required' => ':attribute bắt buộc phải nhập',
+                'product_price.integer' => 'Giá sản phẩm phải là số',
+            ];
+        $attributes = [
+            'product_name' => 'Tên sản phẩm',
+            'product_price' => 'Giá sản phẩm'
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages, $attributes);
+        // dd($validator);
+        // $validator->validate();
+        if ($validator->fails()) {
+            // return 'Validate thất bại';
+            $validator->errors()->add('msg', 'Vui lòng kiểm tra lại dữ liệu');
+        } else {
+            // return ' Validate thành công';
+            return redirect()->route('product')->with('msg', 'Validate thành công');
+        }
+        return back()->withErrors($validator);
     }
 }
