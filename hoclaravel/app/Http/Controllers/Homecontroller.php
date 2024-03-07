@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\Uppercase;
+
 class HomeController extends Controller
 {
     public $data = [];
@@ -27,33 +28,6 @@ class HomeController extends Controller
     }
 
     // Sử dụng Validate
-    // public function postProducts(Request $request)
-    // {
-    //     // $rules =
-    //     //     [
-    //     //         'product_name' => 'required|min:6',
-    //     //         'product_price' => 'required|integer'
-    //     //     ];
-    //     // // $message =
-    //     // //     [
-    //     // //         'product_name.required' => 'Trường :attribute bắt buộc phải nhập',
-    //     // //         'product_name.min' => 'Tên sản phẩm không được nhỏ hơn :min kí tự',
-    //     // //         'product_price.required' => 'Giá sản phẩm bắt buộc phải nhập',
-    //     // //         'product_price.integer' => 'Giá sản phẩm phải là số',
-    //     // //     ];
-
-    //     // $messages = [
-    //     //     'required' => 'Trường :attribute bắt buộc phải nhập',
-    //     //     'min' => 'Trường :attribute không được nhỏ hơn :min kí tự',
-    //     //     'integer' => 'Trường :attibute phải là số '
-    //     // ];
-    //     // $request->validate($rules, $messages);
-    //     // // $request->validate([
-    //     // //     'product_name' => ['required', 'integer', 'min:6'],
-    //     // //     'product_price' => 'required|integer'
-    //     // // ]);
-    //     // // Xử lý việc thêm dữ liệu vào database
-    // }
     public function putProducts(Request $request)
     {
         dd($request->all());
@@ -103,8 +77,11 @@ class HomeController extends Controller
     {
         $rules =
             [
-                'product_name' => ['required', 'min:6', new Uppercase],
-                'product_price' => ['required','integer', new Uppercase]
+                'product_name' => ['required', 'min:6', function($attributes,$value,$fail){
+                    // $this->isUppercase($value,'Trường này không hợp lệ được chưa', $fail);
+                    isUppercase($value,'Trường này không hợp lệ được chưa', $fail); // không cần this vì isUppercase là một hàm riêng
+                }],
+                'product_price' => ['required', 'integer', new Uppercase]
             ];
 
         $messages =
@@ -119,17 +96,19 @@ class HomeController extends Controller
             'product_name' => 'The name of product',
             'product_price' => 'Giá sản phẩm'
         ];
-        $validator = Validator::make($request->all(), $rules, $messages, $attributes);
         
-        // dd($validator);
-        // $validator->validate();
+        $validator = Validator::make($request->all(), $rules, $messages, $attributes);
         if ($validator->fails()) {
-            // return 'Validate thất bại';
             $validator->errors()->add('msg', 'Vui lòng kiểm tra lại dữ liệu');
         } else {
-            // return ' Validate thành công';
             return redirect()->route('product')->with('msg', 'Validate thành công');
         }
         return back()->withErrors($validator);
     }
+
+    // public function isUppercase($value, $messages, $fail){
+    //     if ($value != mb_strtoupper($value, 'UTF-8')){
+    //         $fail($messages);
+    //     }
+    // } // vì đã viết bên file Funcotion.php. Và trên hoàm postProduct không còn gọi this nữa
 }
