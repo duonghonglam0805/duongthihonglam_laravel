@@ -6,13 +6,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\Uppercase;
-
+use Illuminate\Support\Facades\DB; // hoặc chỉ cần use DB
 class HomeController extends Controller
 {
     public $data = [];
     public function index()
     {
         $this->data['title'] = 'Đào tạo lập trình web';
+        $this->data['message']= 'Đăng ký tài khoản thành công';
+        // $users = DB::select('SELECT * FROM users WHERE email=:email', ['email'=>'honglam@gmail.com']);
+        // dd($users);
         return view('clients.home', $this->data);
     }
     public function products()
