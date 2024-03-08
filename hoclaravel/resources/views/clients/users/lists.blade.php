@@ -17,6 +17,8 @@
                 <th>Tên</th>
                 <th>Email</th>
                 <th width= "25%">Thời gian</th>
+                <th width = 5%>Sửa</th>
+                <th width = 5%>Xóa</th>
             </tr>
         </thead>
         <tbody>
@@ -27,10 +29,12 @@
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
                     <td>{{$user->created_at}}</td>
+                    <td><a href="{{route('users.edit', ['id'=>$user->id])}}" class="btn btn-warning btn-sm">Sửa</a></td>
+                    {{-- <td><a href="{{route('users.edit')}}" class="btn btn-danger btn-sm">Xóa</a></td> --}}
                     </tr> 
                 @endforeach        
             @else
-                <tr>
+                <tr colspan = "6">
                     <td>Không có người dùng</td>
                 </tr>
             @endif

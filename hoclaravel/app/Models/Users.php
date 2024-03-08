@@ -17,8 +17,17 @@ class Users extends Model
         $users = DB::select('SELECT * FROM users ORDER BY created_at DESC');
         return $users;
     }
-    public function addUser($data){
+    public function addUser($data)
+    {
         DB::insert('INSERT INTO users (name, email, created_at) VALUE (?, ? , ?)', $data);
-        
+    }
+    public function getDetail($id)
+    {
+        return DB::select('SELECT* FROM ' . $this->table . ' WHERE id = ? ', [$id]);
+    }
+    public function updateUser($data, $id)
+    {
+        $data[] = $id;
+        return DB::update('UPDATE ' . $this->table . ' SET name = ?, email = ?, updated_at = ? WHERE id = ? ', $data);
     }
 }
