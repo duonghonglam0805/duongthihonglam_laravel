@@ -7,6 +7,7 @@ use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\Uppercase;
 use Illuminate\Support\Facades\DB; // hoặc chỉ cần use DB
+
 class HomeController extends Controller
 {
     public $data = [];
