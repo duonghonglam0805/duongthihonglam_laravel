@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 // use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Response;
 use Whoops\Run;
 
@@ -44,3 +45,7 @@ Route::post('/demo-response', function (Request $request) {
 });
 Route::get('download-image', [HomeController::class, 'dowloadImage'])->name('dowloadImage');
 Route::get('download-doc', [HomeController::class, 'dowloadPDF'])->name('dowloadPDF');
+//Người dùng
+Route::prefix('users')->group(function(){
+    Route::get('/',[UsersController::class, 'index']);
+});
