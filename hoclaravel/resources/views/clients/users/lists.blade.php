@@ -30,7 +30,7 @@
                     <td>{{$user->email}}</td>
                     <td>{{$user->created_at}}</td>
                     <td><a href="{{route('users.edit', ['id'=>$user->id])}}" class="btn btn-warning btn-sm">Sửa</a></td>
-                    {{-- <td><a href="{{route('users.edit')}}" class="btn btn-danger btn-sm">Xóa</a></td> --}}
+                    <td><a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" href="{{ route('users.delete', ['id' => $user->id]) }}" class="btn btn-danger btn-sm">Xóa</a></td>
                     </tr> 
                 @endforeach        
             @else
