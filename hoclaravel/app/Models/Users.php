@@ -41,32 +41,29 @@ class Users extends Model
     }
     public function learnQueryBuider()
     {
+        DB::enableQueryLog();
         //Lấy tất cả bản ghi của table
         // $lists = DB::table($this->table)->get(); // list này là một mảng
+        $id = 5;
         $lists = DB::table($this->table)
-            ->select('email', 'name as hoten')
-            // ->where('id', '=', 5)
-            // ->where('id', '>', 2)
-            // so sánh and
-            // ->where('id', '>', 2)
-            // ->where('id', '<', 6)
-            // ->where([
-            //     [
-            //         'id', '>', 2
-            //     ],
-            //     [
-            //         'id', '<', 6
-            //     ]
-            //     ])
-            // ->where([
-            //     'id' => 19,
-            //     'name' => 'Nguyễn Văn A'
-            // ])
-            // so sánh and
-            ->where('id', 2)
-            ->orWhere('id', 6)
+            ->select('email', 'name as hoten', 'id')
+            //gom nhóm
+            // ->where('id', 2)
+            // ->where(function($query) use ($id){
+            //     $query->where('id', '<', $id)->orWhere('id', '>', $id);
+            // })
+            // ->where('name', 'like', '%Nguyễn Văn A%')
+            // ->whereBetween('id', [3,5])
+            // ->whereNotBetween('id', [3,5])
+            // ->whereIn('id', [4, 5])
+            // ->whereNotIn('id', [4, 5])
+            // ->whereNull('update')
+            ->whereNotNull('updated_at')
             ->get();
-        // dd($lists);
+        $sql = DB::getQueryLog();
+        // dd($sql);
+        // ->toSql();
+        dd($lists);
         // echo $lists[0]->email;
         // Lấy một bản ghi đầu tiên của table (Lấy thông tin chi tiết)
         $detail = DB::table($this->table)->first();
