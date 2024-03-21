@@ -45,24 +45,36 @@ class Users extends Model
         //Lấy tất cả bản ghi của table
         // $lists = DB::table($this->table)->get(); // list này là một mảng
         $id = 5;
-        $lists = DB::table($this->table)
-            ->select('email', 'name as hoten', 'id')
-            //gom nhóm
-            // ->where('id', 2)
-            // ->where(function($query) use ($id){
-            //     $query->where('id', '<', $id)->orWhere('id', '>', $id);
-            // })
-            // ->where('name', 'like', '%Nguyễn Văn A%')
-            // ->whereBetween('id', [3,5])
-            // ->whereNotBetween('id', [3,5])
-            // ->whereIn('id', [4, 5])
-            // ->whereNotIn('id', [4, 5])
-            // ->whereNull('update')
-            ->whereNotNull('updated_at')
+        // $lists = DB::table($this->table)
+        //     ->select('email', 'name as hoten', 'id', 'created_at')
+        //gom nhóm
+        // ->where('id', 2)
+        // ->where(function($query) use ($id){
+        //     $query->where('id', '<', $id)->orWhere('id', '>', $id);
+        // })
+        // ->where('name', 'like', '%Nguyễn Văn A%')
+        // ->whereBetween('id', [3,5])
+        // ->whereNotBetween('id', [3,5])
+        // ->whereIn('id', [4, 5])
+        // ->whereNotIn('id', [4, 5])
+        // ->whereNull('update')
+        // ->whereNotNull('updated_at')
+        // ->whereDate('updated_at', '2024-03-20')
+        // ->whereMonth('created_at', '03 ')
+        // ->whereMonth('created_at', '11')
+        // ->whereYear('created_at', '2024 ')
+        // ->whereColumn('created_at','>' ,'update_at')
+
+        // Phần join bảng
+        $lists = DB::table('users')
+            ->select('users.*', 'groups.name as group_name')
+            ->join('groups', 'users.group_id', '=', 'groups.id')
+            // ->leftJoin('groups', 'users.group_id', '=', 'groups.id')
+            // ->rightJoin('groups', 'users.group_id', '=', 'groups.id')
             ->get();
-        $sql = DB::getQueryLog();
+        // $sql = DB::getQueryLog();
         // dd($sql);
-        // ->toSql();
+
         dd($lists);
         // echo $lists[0]->email;
         // Lấy một bản ghi đầu tiên của table (Lấy thông tin chi tiết)
