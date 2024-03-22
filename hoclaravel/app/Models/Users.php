@@ -131,7 +131,31 @@ class Users extends Model
         // ->delete();
         // dd($status);
         // Đếm số bản ghi
-        $count = DB::table('users')->where('id',  '>', 2)->count();
-        dd($count);
+        // $count = DB::table('users')->where('id',  '>', 2)->count();
+        // dd($count);
+        // DB::raw
+        $lists = DB::table('users')
+            // ->selectRaw('email, count(id) as email_count')
+            // ->groupBy('email')
+            // ->groupBy('name')
+            // ->where('id', '>' , 2)
+            // ->whereRaw('id > ?', [2])
+            // ->orderByRaw('created_at DESC')
+            // ->groupBy('email')
+            // // ->havingRaw('email_count > ?', [2])
+            // ->where(
+            //     'group_id',
+            //     '=',
+            //     function ($query) {
+            //         $query->select('id')
+            //             ->from('groups')
+            //             ->where('name', '=', 'Administrator');
+            //     }
+            // )
+            // ->select('email', DB::raw('(SELECT count(id) FROM `groups`) as group_count'))
+            ->selectRaw('email, (SELECT count(id) FROM `groups`) as group_count')
+            ->get();
+        $sql = DB::getQueryLog();
+        dd($sql);
     }
 }
