@@ -66,31 +66,72 @@ class Users extends Model
         // ->whereColumn('created_at','>' ,'update_at')
 
         // Phần join bảng
-        $lists = DB::table('users')
-            // ->select('users.*', 'groups.name as group_name')
-            // ->join('groups', 'users.group_id', '=', 'groups.id')
-            // ->leftJoin('groups', 'users.group_id', '=', 'groups.id')
-            // ->rightJoin('groups', 'users.group_id', '=', 'groups.id')
-            // ->orderBy('created_at', 'asc')
-            // ->orderBy('id', 'desc')
-            // ->inRandomOrder()
-            // truy vấn theo nhóm
-            // ->select(DB::raw('count(id) as email_count'), 'email')
-            // ->groupBy('email')
-            // ->having('email_count', '>=' , 2)
-            // ->limit(2)
-            // ->offset(0)
-            ->take(2)
-            ->skip(2)
-            ->get();
+        // $lists = DB::table('users')
+        // ->select('users.*', 'groups.name as group_name')
+        // ->join('groups', 'users.group_id', '=', 'groups.id')
+        // ->leftJoin('groups', 'users.group_id', '=', 'groups.id')
+        // ->rightJoin('groups', 'users.group_id', '=', 'groups.id')
+        // ->orderBy('created_at', 'asc')
+        // ->orderBy('id', 'desc')
+        // ->inRandomOrder()
+        // truy vấn theo nhóm
+        // ->select(DB::raw('count(id) as email_count'), 'email')
+        // ->groupBy('email')
+        // ->having('email_count', '>=' , 2)
+        // ->limit(2)
+        // ->offset(0)
+        // ->take(2)
+        // ->skip(2)
+        // ->get();
         // $sql = DB::getQueryLog();
         // dd($sql);
+        //INSERT DỮ LIỆU VÀO BẢNG
 
-        dd($lists);
+        // $status = DB::table('users')->insert([
+        //     'name' => 'Nguyen Van B',
+        //     'email' => 'vanb@gamil.com',
+        //     'group_id' => '1',
+        //     'created_at' => date('Y-m-d H:i:s')
+        // ]);
+
+        // $lastId = DB::getPdo()->lastInsertId();
+        // dd($lastId);
+
+        // $lastId = DB::table('users')->insertGetId([
+        //     'name' => 'Nguyen Van B',
+        //     'email' => 'vanb@gamil.com',
+        //     'group_id' => '1',
+        //     'created_at' => date('Y-m-d H:i:s')
+        // ]);
+        // dd($lastId);
+        // $sql = DB::getQueryLog();
+        // dd($sql); 
+
         // echo $lists[0]->email;
         // Lấy một bản ghi đầu tiên của table (Lấy thông tin chi tiết)
-        $detail = DB::table($this->table)->first();
+        // $detail = DB::table($this->table)->first();
         // dd($detail->email);
         // dd($lists);
+
+        // Cập nhật bản ghi/ sửa
+        // $status = DB::table('users')
+        // ->where('id', 13)
+        // ->update([
+        //     'name' => 'Nguyen Van lam',
+        //     'email' => 'vanlam@gamil.com',
+        //     'updated_at' => date('Y-m-d H:i:s')
+        // ]);
+        // // dd($status);
+        //   $sql = DB::getQueryLog();
+        //     dd($sql); 
+
+        // Xóa bản ghi
+        // $status = DB::table('users')
+        // ->where('id', 13)
+        // ->delete();
+        // dd($status);
+        // Đếm số bản ghi
+        $count = DB::table('users')->where('id',  '>', 2)->count();
+        dd($count);
     }
 }
