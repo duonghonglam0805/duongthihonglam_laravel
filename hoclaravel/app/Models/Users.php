@@ -67,10 +67,21 @@ class Users extends Model
 
         // Phần join bảng
         $lists = DB::table('users')
-            ->select('users.*', 'groups.name as group_name')
-            ->join('groups', 'users.group_id', '=', 'groups.id')
+            // ->select('users.*', 'groups.name as group_name')
+            // ->join('groups', 'users.group_id', '=', 'groups.id')
             // ->leftJoin('groups', 'users.group_id', '=', 'groups.id')
             // ->rightJoin('groups', 'users.group_id', '=', 'groups.id')
+            // ->orderBy('created_at', 'asc')
+            // ->orderBy('id', 'desc')
+            // ->inRandomOrder()
+            // truy vấn theo nhóm
+            // ->select(DB::raw('count(id) as email_count'), 'email')
+            // ->groupBy('email')
+            // ->having('email_count', '>=' , 2)
+            // ->limit(2)
+            // ->offset(0)
+            ->take(2)
+            ->skip(2)
             ->get();
         // $sql = DB::getQueryLog();
         // dd($sql);
@@ -80,6 +91,6 @@ class Users extends Model
         // Lấy một bản ghi đầu tiên của table (Lấy thông tin chi tiết)
         $detail = DB::table($this->table)->first();
         // dd($detail->email);
-        dd($lists);
+        // dd($lists);
     }
 }
