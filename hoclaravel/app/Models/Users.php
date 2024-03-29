@@ -12,7 +12,7 @@ class Users extends Model
     use HasFactory;
     //Khai bảo một thuộc tính table
     protected $table = 'users';
-    public function getAllUsers($filters = [], $keywords = null, $sortByArr = null)
+    public function getAllUsers($filters = [], $keywords = null, $sortByArr = null, $perPage = null)
     {
         // DB::enableQueryLog();
         // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
@@ -38,7 +38,12 @@ class Users extends Model
                 $query->orWhere('email', 'like', '%' . $keywords . '%');
             });
         }
-        $users = $users->get();
+
+        if (!empty($perPage)) {
+            $users = $users->paginate($perPage);
+        } else {
+            $users = $users->get();
+        }
         // $sql =  DB::getQueryLog();
         // dd($sql);
         return $users;
@@ -181,7 +186,7 @@ class Users extends Model
             // ->select('email', DB::raw('(SELECT count(id) FROM `groups`) as group_count'))
             ->selectRaw('email, (SELECT count(id) FROM `groups`) as group_count')
             ->get();
-        $sql = DB::getQueryLog();
-        // dd($sql);
+        // $users = $users->get();
+
     }
 }
