@@ -15,14 +15,35 @@ class UsersController extends Controller
         // $this-> $users= new Users();
         $this->users = new Users();
     }
-    public function index()
+    public function index(Request $request)
     {
         // $statement = $this->users->statementUser('DELETE FROM ');
         // dd($statement); //
         $title = 'Danh sách người dùng';
         // $users = new Users();
-        $this->users->learnQueryBuider();
-        $usersList = $this->users->getAllUsers();
+        // $this->users->learnQueryBuider();
+        $keywords = null;
+        $filters = [];
+        if (!empty($request->status)) {
+            $status = $request->status;
+            if ($status == 'active') {
+                $status = 1;
+            } else {
+                $status = 0;
+            }
+            $filters[] = ['users.status', '=', $status];
+            // dd($filter);
+        }
+        if (!empty($request->group_id)) {
+            $group_id = $request->group_id;
+
+            $filters[] = ['users.group_id', '=', $group_id];
+            // dd($filters);
+        }
+        if (!empty($request->keywords)) {
+            $keywords = $request->keywords;
+        }
+        $usersList = $this->users->getAllUsers($filters, $keywords);
         return view('clients.users.lists', compact('title', 'usersList'));
     }
     public function add()
@@ -52,7 +73,7 @@ class UsersController extends Controller
         return redirect()->route('users.index')->with('msg', 'Thêm người dùng thành công');
     }
 
-    public function getEdit( Request $request, $id = 0)
+    public function getEdit(Request $request, $id = 0)
     {
         $title = "Sửa người dùng";
         if (!empty($id)) {
@@ -74,9 +95,10 @@ class UsersController extends Controller
     public function postEdit(Request $request)
     {
         $id = session('id');
-        if(empty($id)){{
-            return back()->with('msg', 'Liên kết không tồn tại');
-        }}
+        if (empty($id)) { {
+                return back()->with('msg', 'Liên kết không tồn tại');
+            }
+        }
         $request->validate([
             'fullName' => 'required|min:5',
             'email' => 'required|email|unique:users,email,' . $id
@@ -98,22 +120,23 @@ class UsersController extends Controller
         $this->users->updateUser($dataUpdate, $id);
         return back()->with('msg', 'Cập nhật người dùng thành công');
     }
-    public function delete($id = 0){
+    public function delete($id = 0)
+    {
 
         if (!empty($id)) {
             $userDetail = $this->users->getDetail($id);
             if (!empty($userDetail[0])) {
                 $deleteStatus = $this->users->deleteUser($id);
-                if($deleteStatus){
+                if ($deleteStatus) {
                     $msg = "Xoa nguoi dung thanh cong";
-                }else{
+                } else {
                     $msg = "Ban khong the xoa nguoi dung";
                 }
             } else {
                 $msg = 'Người dùng này không tồn tại';
             }
-        }else {
-           $msg = 'Liên kết không tồn tại';
+        } else {
+            $msg = 'Liên kết không tồn tại';
         }
         return redirect()->route('users.index')->with('msg', $msg);
     }
