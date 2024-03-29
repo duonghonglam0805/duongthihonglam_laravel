@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UsersController;
+use PHPUnit\Framework\MockObject\Stub\ReturnReference;
 
 class Users extends Model
 {
@@ -50,7 +51,8 @@ class Users extends Model
     }
     public function addUser($data)
     {
-        DB::insert('INSERT INTO users (name, email, created_at) VALUE (?, ? , ?)', $data);
+        // DB::insert('INSERT INTO users (name, email, created_at) VALUE (?, ? , ?)', $data);
+        return DB::table($this->table)->insert($data);
     }
     public function getDetail($id)
     {
