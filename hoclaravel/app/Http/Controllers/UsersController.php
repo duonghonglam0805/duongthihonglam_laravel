@@ -130,7 +130,8 @@ class UsersController extends Controller
         } else {
             return redirect()->route('users.index')->with('msg', 'Liên kết không tồn tại');
         }
-        return view('clients.users.edit', compact('title', 'userDetail'));
+        $allGroups = getAllGroups();
+        return view('clients.users.edit', compact('title', 'userDetail', 'allGroups'));
     }
     public function postEdit(Request $request)
     {
@@ -141,19 +142,31 @@ class UsersController extends Controller
         }
         $request->validate([
             'fullName' => 'required|min:5',
-            'email' => 'required|email|unique:users,email,' . $id
-
+            'email' => 'required|email|unique:users,email,'.$id,
+            'group_id' => ['required', 'integer', function ($attribute, $value, $fail) {
+                if ($value == 0) {
+                    $fail('Bắt buộc phải chọn nhóm');
+                }
+            }],
+            'status' => 'required|integer'
         ], [
             'fullName.required' => 'Họ và tên bắt buộc phải nhập',
             'fullName.min' => 'Họ tên phải từ :min kí tự trở lên',
             'email.required' => 'Email bắt buộc phải nhập',
             'email.email' => 'Email không đúng định dạng',
-            'email.unique' => 'Email đã tồn tại trên hệ thống'
+            'email.unique' => 'Email đã tồn tại trên hệ thống',
+            'group_id.required' => 'Nhóm không được để trống',
+            'group_id.integer' => 'Nhóm không hợp lệ',
+            'status.required' => 'Trạng thái không được để trống',
+            'status.integer' => 'Trạng thái không hợp lệ'
         ]);
+
         $dataUpdate = [
-            $request->fullName,
-            $request->email,
-            date('Y-m-d H:i:s')
+            'name' => $request->fullName,
+            'email' => $request->email,
+            'group_id' => $request->gruop_id,
+            'status' => $request->status,
+            'updated_at' => date('Y-m-d H:i:s')
         ];
 
         // dd($dataUpdate);
