@@ -72,4 +72,5 @@
             @endif
         </tbody>
     </table>
+    {{$usersList->links()}}
     @endsection
