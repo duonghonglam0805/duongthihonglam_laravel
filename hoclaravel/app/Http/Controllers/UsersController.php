@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use  App\Models\Users;
+use  App\Models\Groups;
 
 class UsersController extends Controller
 {
@@ -50,45 +51,63 @@ class UsersController extends Controller
         $sortBy = $request->input('sort-by');
         $sortType = $request->input('sort-type');
         $allowSort = ['asc', 'desc'];
-        if(!empty($sortType) && in_array($sortType,$allowSort)){
-            if($sortType=='desc'){
+        if (!empty($sortType) && in_array($sortType, $allowSort)) {
+            if ($sortType == 'desc') {
                 $sortType = 'asc';
-            }else{
+            } else {
                 $sortType = 'desc';
             }
-        }else{
+        } else {
             $sortType = 'asc';
         }
         $sortArr = [
             'sortBy' => $sortBy,
-            'sortType' =>$sortType
-         ];
+            'sortType' => $sortType
+        ];
 
         $usersList = $this->users->getAllUsers($filters, $keywords, $sortArr, self::_PER_PAGE);
         return view('clients.users.lists', compact('title', 'usersList', 'sortType'));
     }
     public function add()
     {
-        $title = "Thêm người dùng";
-        return view('clients.users.add', compact('title'));
+        function getAllGroups()
+        {
+            $groups = new Groups;
+            return $groups->getAll();
+        }
+        $title = 'Thêm người dùng';
+        $allGroups = getAllGroups();
+        return view('clients.users.add', compact('title', 'allGroups'));
     }
     public function postAdd(Request $request)
     {
         $request->validate([
             'fullName' => 'required|min:5',
-            'email' => 'required|email|unique:users'
+            'email' => 'required|email|unique:users',
+            'group_id' => ['required', 'integer', function ($attribute, $value, $fail) {
+                if ($value == 0) {
+                    $fail('Bắt buộc phải chọn nhóm');
+                }
+            }],
+            'status' => 'required|integer'
         ], [
             'fullName.required' => 'Họ và tên bắt buộc phải nhập',
             'fullName.min' => 'Họ tên phải từ :min kí tự trở lên',
             'email.required' => 'Email bắt buộc phải nhập',
             'email.email' => 'Email không đúng định dạng',
-            'email.unique' => 'Email đã tồn tại trên hệ thống'
+            'email.unique' => 'Email đã tồn tại trên hệ thống',
+            'group_id.required' => 'Nhóm không được để trống',
+            'group_id.integer' => 'Nhóm không hợp lệ',
+            'status.required' => 'Trạng thái không được để trống',
+            'status.integer' => 'Trạng thái không hợp lệ'
         ]);
 
         $dataInsert = [
-            $request->fullName, //fullName là tên name trong form
-            $request->email,
-            date('Y-m-d H:i:s')
+            'name' => $request->fullName,
+            'email' => $request->email,
+            'group_id' => $request->gruop_id,
+            'status' => $request->status,
+            'created_at' => date('Y-m-d H:i:s')
         ];
         $this->users->addUser($dataInsert);
         return redirect()->route('users.index')->with('msg', 'Thêm người dùng thành công');
