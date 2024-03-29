@@ -12,20 +12,29 @@ class Users extends Model
     use HasFactory;
     //Khai bảo một thuộc tính table
     protected $table = 'users';
-    public function getAllUsers($filters = [], $keywords = null)
+    public function getAllUsers($filters = [], $keywords = null, $sortByArr = null)
     {
         // DB::enableQueryLog();
         // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
+
         $users = DB::table($this->table)
             ->select('users.*', 'groups.name as group_name')
-            ->join('groups', 'users.group_id', '=', 'groups.id')
-            ->orderBy('create_at', 'ASC');
+            ->join('groups', 'users.group_id', '=', 'groups.id');
+        $orderBy = 'users.created_at';
+        $orderType = 'desc';
+        if (!empty($sortByArr) && is_array($sortByArr)) {
+            if (!empty($sortByArr['sortBy']) && !empty($sortByArr['sortType'])) {
+                $orderBy = trim($sortByArr['sortBy']);
+                $orderType = trim($sortByArr['sortType']);
+            }
+        }
+        $users = $users->orderBy($orderBy, $orderType);
         if (!empty($filters)) {
             $users = $users->where($filters);
         }
         if (!empty($keywords)) {
             $users = $users->where(function ($query) use ($keywords) {
-                $query->orWhere('fullname', 'like', '%' . $keywords . '%');
+                $query->orWhere('name', 'like', '%' . $keywords . '%');
                 $query->orWhere('email', 'like', '%' . $keywords . '%');
             });
         }
